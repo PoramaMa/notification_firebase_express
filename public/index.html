@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" type="module"></script>
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        nav {
+            padding: 30px;
+        }
+
+        nav a {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav a.router-link-exact-active {
+            color: #42b983;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Notification</h1>
+    <script type="module">
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqpw5UbHOKejed7uZdFaVYGaEbVUmFjYw",
+            authDomain: "testnoti-709f4.firebaseapp.com",
+            projectId: "testnoti-709f4",
+            storageBucket: "testnoti-709f4.appspot.com",
+            messagingSenderId: "873103653252",
+            appId: "1:873103653252:web:c6103781dcb51ef33d45d1",
+            measurementId: "G-RWD6KSFKJ8"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const messaging = firebase.messaging();
+        messaging.getToken({
+            vapidKey: "BKcyG789WdViQGTZyQBQ4XC-OShUKxDEg909O1sVKtLTy0CKyIta1VbAIbFO1G4p2qKdS-Ldjw37Qi1jpKzSq4Q"
+        })
+            .then((currentToken) => {
+                if (currentToken) {
+                    console.log("currentToken :: ", currentToken);
+                } else {
+                    console.log(
+                        "No registration token available. Request permission to generate one."
+                    );
+                }
+            })
+            .catch((err) => {
+                console.log("An error occurred while retrieving token. ", err);
+            });
+
+        function requestPermission() {
+            console.log("Requesting permission...");
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    console.log("Notification permission granted.");
+                }
+            });
+        }
+        requestPermission();
+
+        messaging.onMessage((payload) => {
+            console.log("Message received. ", payload);
+        });
+    </script>
+</body>
+
+</html>
